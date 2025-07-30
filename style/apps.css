@@ -1,0 +1,159 @@
+/* apps.css: 各アプリ用の凝ったデザイン */
+
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: #e9f4fa;
+  border-radius: 11px;
+  box-shadow: 0 1.5px 7px #3498db18;
+  margin-bottom: 10px;
+}
+.file-item {
+  padding: 7.5px 12px;
+  border-bottom: 1px solid #bbd6ff44;
+  font-size: 15px;
+  color: #1a2337;
+  cursor: pointer;
+  border-radius: 7px;
+  transition: background .12s, color .12s;
+}
+.file-item:last-child { border-bottom: none; }
+.file-item:hover {
+  background: #41e3ff25;
+  color: #232946;
+}
+
+.file-actions {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.file-actions input[type="text"],
+input[type="text"].newfile {
+  border: 1.5px solid #3498db77;
+  border-radius: 7px;
+  padding: 5px 9px;
+  font-size: 15px;
+  background: #fafdff;
+  margin-right: 8px;
+  outline: none;
+  transition: border .15s;
+}
+.file-actions input[type="text"]:focus {
+  border-color: #41e3ff;
+}
+.file-actions button {
+  background: linear-gradient(90deg,#3498db 60%,#41e3ff 120%);
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 15px;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  box-shadow: 0 2px 8px #3498db18;
+  transition: background .13s;
+}
+.file-actions button:hover {
+  background: linear-gradient(90deg,#41e3ff 60%,#3498db 120%);
+}
+
+/* テキストエディタ */
+textarea#editorArea,
+textarea {
+  width: 97%;
+  min-height: 80px;
+  font-size: 15px;
+  border-radius: 7px;
+  border: 1.5px solid #b9d7ff;
+  background: #fafdff;
+  padding: 7px 11px;
+  resize: vertical;
+  box-shadow: 0 1.5px 7px #3498db15;
+  color: #223;
+  transition: border .15s;
+}
+textarea:focus { border-color: #41e3ff; }
+
+/* ターミナル */
+.termout {
+  background: #101925;
+  color: #3be2ff;
+  border-radius: 7px;
+  font-family: 'Consolas', 'Menlo', monospace;
+  font-size: 15px;
+  padding: 10px 9px;
+  min-height: 64px;
+  max-height: 160px;
+  overflow-y: auto;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px #41e3ff0d;
+}
+input.termcmd {
+  width: 70%;
+  border-radius: 7px;
+  border: 1.5px solid #3498db77;
+  background: #232946;
+  color: #fff;
+  font-size: 15px;
+  padding: 6px 9px;
+  margin-right: 8px;
+  outline: none;
+  transition: border .13s;
+}
+input.termcmd:focus { border-color: #41e3ff; }
+button.exec {
+  background: linear-gradient(90deg,#41e3ff 60%,#3498db 120%);
+  color: #232946;
+  border-radius: 8px;
+  padding: 6px 15px;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 7px #41e3ff1a;
+  transition: background .12s;
+}
+button.exec:hover { background: linear-gradient(90deg,#3498db 60%,#41e3ff 120%); }
+
+.calcInput, .url {
+  border: 1.5px solid #3498db77;
+  border-radius: 7px;
+  padding: 5px 9px;
+  font-size: 15px;
+  background: #fafdff;
+  margin-right: 8px;
+  outline: none;
+  transition: border .15s;
+}
+.calcInput:focus, .url:focus { border-color: #41e3ff; }
+.calcBtn, .go {
+  background: linear-gradient(90deg,#3498db 60%,#41e3ff 120%);
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 15px;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 8px #3498db18;
+  transition: background .13s;
+}
+.calcBtn:hover, .go:hover {
+  background: linear-gradient(90deg,#41e3ff 60%,#3498db 120%);
+}
+.calcRes {
+  margin-top: 7px;
+  font-size: 17px;
+  color: #3498db;
+  font-weight: bold;
+}
+.webview {
+  border-radius: 7px;
+  background: #fafdff;
+  border: 1.5px solid #3498db33;
+  margin-top: 7px;
+  box-shadow: 0 2px 8px #3498db10;
+}
