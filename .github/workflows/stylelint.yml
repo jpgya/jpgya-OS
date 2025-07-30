@@ -1,83 +1,16 @@
-name: WebOS CI/CD
+name: Deploy static site to GitHub Pages
 
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
-  lint-css:
-    name: CSS Lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm install --save-dev stylelint stylelint-config-standard
-      - run: npx stylelint "style/**/*.css"
-
-  lint-js:
-    name: JS/TS Lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm install --save-dev eslint prettier
-      - run: npx eslint "apps/**/*.js" "core/**/*.js" || true
-      - run: npx prettier --check "apps/**/*.js" "core/**/*.js" "style/**/*.css"
-
-  test:
-    name: Unit Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm install
-      - run: npm test
-
-  build:
-    name: Build (Sass/SCSS, bundle)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm install
-      # 例: Sassビルド
-      - run: npx sass style/:style/ --no-source-map
-      # 例: JSバンドル
-      # - run: npx esbuild apps/ --bundle --outdir=dist/apps
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: webos-build
-          path: |
-            index.html
-            style/
-            apps/
-            core/
-
   deploy:
-    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
-    needs: [lint-css, lint-js, test, build]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: webos-build
-          path: ./
-      - uses: peaceiris/actions-gh-pages@v4
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
-
-  # オプション: Dependabotによる依存自動更新
-  # https://docs.github.com/ja/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically
