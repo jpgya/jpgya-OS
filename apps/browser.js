@@ -1,26 +1,24 @@
-export function createBrowser() {
-  return {
-    id: "browser",
-    name: "Webビューア",
-    icon: "🌐",
-    createWindow: () => {
-      const el = document.createElement("div");
-      el.className = "window";
-      el.innerHTML = `
-        <div class="titlebar">🌐 Webビューア <button class="close">×</button></div>
-        <div class="content">
-          <input class="url" value="https://www.example.com" style="width:80%">
-          <button class="go">開く</button>
-          <iframe class="webview" src="https://www.example.com" style="width:98%;height:100px;border:1px solid #aaa;"></iframe>
-        </div>`;
-      el.querySelector(".close").onclick = () => window.OS.closeWin(win);
-      el.querySelector(".go").onclick = () => {
-        let u = el.querySelector(".url").value;
-        if (!u.startsWith("http")) u = "https://" + u;
-        el.querySelector(".webview").src = u;
-      };
-      const win = { el, title: "Webビューア" };
-      return win;
-    }
-  };
-}
+export const browser = {
+  id:'browser',
+  name:'Webビューア',
+  icon:'🌐',
+  render: function(){
+    return `<input id="url" placeholder="https://..." style="width:68%" value="https://www.example.com">
+      <button onclick="openWeb()">開く</button>
+      <iframe id="webview" src="https://www.example.com" class="webview"></iframe>
+      <script>
+      function openWeb(){
+        let u=document.getElementById('url').value;
+        if(!u.startsWith('http'))u='https://'+u;
+        document.getElementById('webview').src=u;
+      }
+      function fitIframe(){
+        let iframe=document.getElementById('webview');
+        let p=iframe.parentElement;
+        iframe.style.height=Math.max(100,p.offsetHeight-60)+'px';
+      }
+      fitIframe();
+      window.addEventListener('resize',fitIframe);
+      </script>`;
+  }
+};
