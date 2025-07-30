@@ -1,0 +1,177 @@
+/* window.css: ウィンドウ、タスクバー、スタートメニューの凝ったデザイン */
+.window {
+  position: absolute;
+  min-width: 340px;
+  min-height: 160px;
+  max-width: 90vw;
+  max-height: 70vh;
+  background: linear-gradient(120deg,#fafdff 85%,#e6eeff 100%);
+  box-shadow: 0 10px 32px #19204066, 0 1.5px 0 #3be2ff11;
+  border-radius: 13px;
+  overflow: hidden;
+  border: 2px solid #3498db;
+  z-index: 10;
+  animation: appear 0.13s cubic-bezier(.71,1.7,.77,.97);
+}
+@keyframes appear {
+  from { transform: scale(0.90) translateY(20px); opacity:0; }
+  to { transform: scale(1) translateY(0); opacity:1; }
+}
+.window.inactive {
+  opacity: 0.90;
+  border-color: #aaa;
+  filter: grayscale(0.10);
+}
+.window.maxed {
+  top: 0 !important; left: 0 !important;
+  width: 100vw !important; height: calc(100vh - 44px) !important;
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 6px 38px #181e36cc;
+}
+
+.titlebar {
+  background: linear-gradient(90deg,#3498db 75%,#41e3ff 140%);
+  color: #fff;
+  padding: 10px 18px 9px 14px;
+  cursor: move;
+  user-select: none;
+  font-weight: bold;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  letter-spacing: 0.01em;
+  box-shadow: 0 2px 8px #3498db11;
+}
+.window-btns {
+  display: flex;
+  gap: 8px;
+}
+.window-btn {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: #f5f6fa;
+  text-align: center;
+  line-height: 24px;
+  color: #3498db;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 19px;
+  border: none;
+  transition: background .15s, color .15s;
+  outline: none;
+}
+.window-btn.close { background: #e74c3c; color: #fff;}
+.window-btn.min { background: #f1c40f; color: #fff;}
+.window-btn.max { background: #2ecc71; color: #fff;}
+.window-btn:hover { filter: brightness(1.18); }
+
+.win-content {
+  padding: 18px 14px 12px 14px;
+  background: #f5fafd;
+  min-height: 90px;
+  max-height: 54vh;
+  overflow: auto;
+  font-size: 15px;
+  color: #223;
+}
+
+#taskbar {
+  position: fixed;
+  left: 0; bottom: 0;
+  width: 100vw; height: 44px;
+  background: linear-gradient(90deg,#1a2337 85%,#242c43 100%);
+  display: flex; align-items: center;
+  z-index: 1000;
+  box-shadow: 0 -2px 16px #23294699;
+  border-top: 1px solid #3be2ff33;
+  padding: 0 8px;
+}
+
+#start-btn {
+  margin-left: 5px;
+  background: linear-gradient(90deg,#3498db 60%,#41e3ff 130%);
+  color: #fff;
+  border-radius: 10px;
+  padding: 9px 18px;
+  font-size: 17px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 7px #41e3ff33;
+  transition: filter .13s;
+}
+#start-btn:hover { filter: brightness(1.16); }
+
+#tasks {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 18px;
+}
+.task {
+  background: linear-gradient(90deg,#2980b9 70%,#41e3ff 120%);
+  color: #fff;
+  border-radius: 9px 9px 0 0;
+  padding: 5px 16px;
+  margin: 0 2.5px;
+  cursor: pointer;
+  font-size: 15.5px;
+  font-weight: 500;
+  box-shadow: 0 3px 10px #41e3ff11;
+  border: none;
+  outline: none;
+  transition: background .13s, color .13s;
+}
+.task.active {
+  background: #fff;
+  color: #2980b9;
+  font-weight: bold;
+  box-shadow: 0 6px 20px #41e3ff2a;
+}
+
+#clock {
+  color: #eaeaea;
+  font-size: 15.5px;
+  margin-right: 20px;
+  font-family: 'Consolas','Menlo',monospace;
+  letter-spacing: 0.05em;
+}
+
+#start-menu {
+  position: fixed;
+  left: 13px; bottom: 56px;
+  background: linear-gradient(120deg,#2b3357 80%,#3498db 140%);
+  border-radius: 18px;
+  box-shadow: 0 8px 42px #3498db66;
+  padding: 19px 30px 19px 21px;
+  display: none;
+  z-index: 2000;
+  border: 1.5px solid #3be2ff55;
+}
+#start-menu .menu-app {
+  color: #fff;
+  font-size: 17px;
+  padding: 7px 12px 7px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Segoe UI', 'Noto Sans JP', sans-serif;
+  margin-bottom: 1.5px;
+  transition: background .12s, color .12s;
+  display: flex; align-items: center;
+  gap: 0.8em;
+  letter-spacing: 0.03em;
+}
+#start-menu .menu-app:hover {
+  background: linear-gradient(90deg,#41e3ff 60%,#3498db 150%);
+  color: #232946;
+}
+
+@media (max-width: 600px) {
+  .window { min-width: 160px; }
+  .titlebar { font-size: 13px; padding: 6px 10px 5px 9px;}
+  #taskbar { height: 32px; }
+  #start-btn { font-size: 12px; padding: 5px 10px;}
+  #start-menu { left: 1vw; bottom: 38px; padding: 8px 13px 9px 8px; }
+}
