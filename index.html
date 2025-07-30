@@ -9,8 +9,23 @@
   <link rel="stylesheet" href="style/apps.css">
 </head>
 <body>
-  <div id="desktop"></div>
-  <div id="taskbar"></div>
+  <!-- ログイン画面 -->
+  <div id="login-cover">
+    <form id="login-box" onsubmit="return false;">
+      <h1>Ultimate Web OS ログイン</h1>
+      <input id="login-id" autocomplete="username" placeholder="ユーザーID" required><br>
+      <input id="login-pass" type="password" autocomplete="current-password" placeholder="パスワード" required><br>
+      <button id="login-btn" type="submit">ログイン</button>
+      <div id="login-error"></div>
+    </form>
+  </div>
+  <!-- デスクトップUI -->
+  <div id="desktop" style="display:none;"></div>
+  <div id="taskbar" style="display:none;">
+    <button id="start-btn">☰ Start</button>
+    <div id="tasks"></div>
+    <div id="clock"></div>
+  </div>
   <div id="start-menu"></div>
   <script type="module">
     import { bootOS } from "./core/os.js";
