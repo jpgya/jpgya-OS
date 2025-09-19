@@ -1,29 +1,40 @@
-import { vfs, saveVFS } from "../core/vfs.js";
-export function createEditor() {
-  return {
-    id: "editor",
-    name: "テキストエディタ",
-    icon: "📝",
-    createWindow: (fname) => {
-      const el = document.createElement("div");
-      el.className = "window";
-      el.innerHTML = `
-        <div class="titlebar">📝 テキストエディタ <button class="close">×</button></div>
-        <div class="content">
-          <div>ファイル: <b>${fname || ""}</b></div>
-          <textarea style="width:96%;height:80px;">${fname ? (vfs.files[fname]||"") : ""}</textarea>
-          <button class="save">保存</button>
-        </div>`;
-      el.querySelector(".close").onclick = () => window.OS.closeWin(win);
-      el.querySelector(".save").onclick = () => {
-        if (fname) {
-          vfs.files[fname] = el.querySelector("textarea").value;
-          saveVFS();
-          alert("保存しました");
-        }
-      };
-      const win = { el, title: "エディタ" + (fname ? `[${fname}]` : "") };
-      return win;
-    }
+import { readFile, writeFile } from "../core/vfs.js";
+
+export const meta = {
+  name: "テキストエディタ",
+  icon: "https://cdn.jsdelivr.net/gh/jpgya/jpgya-OS/icons/editor.png",
+  desc: "テキストファイルの編集"
+};
+
+export function main() {
+  const win = document.createElement('div');
+  win.className = "window";
+  win.innerHTML = `
+    <div class="window-title">テキストエディタ</div>
+    <div class="window-body">
+      <input id="editor-filename" type="text" placeholder="ファイル名" style="width:90%">
+      <textarea id="editor-content" style="width:98%;height:180px;"></textarea>
+      <div>
+        <button id="editor-load">開く</button>
+        <button id="editor-save">保存</button>
+      </div>
+      <div id="editor-msg"></div>
+    </div>
+    <button class="window-close">×</button>
+  `;
+  document.getElementById('desktop').appendChild(win);
+  win.querySelector('.window-close').onclick = () => win.remove();
+
+  win.querySelector('#editor-load').onclick = () => {
+    const fn = win.querySelector('#editor-filename').value;
+    const data = readFile(fn);
+    win.querySelector('#editor-content').value = data || "";
+    win.querySelector('#editor-msg').textContent = data ? "読み込み成功" : "ファイルなし";
+  };
+  win.querySelector('#editor-save').onclick = () => {
+    const fn = win.querySelector('#editor-filename').value;
+    const data = win.querySelector('#editor-content').value;
+    writeFile(fn, data);
+    win.querySelector('#editor-msg').textContent = "保存しました";
   };
 }

@@ -1,4 +1,4 @@
-import { vfs } from "../core/vfs.js";
+import { listFiles, readFile, writeFile, deleteFile } from "../core/vfs.js";
 export function createTerminal() {
   return {
     id: "terminal",
@@ -20,8 +20,8 @@ export function createTerminal() {
         const cmd = el.querySelector(".termcmd").value.trim();
         let res = "";
         if (cmd === "help") res = "help, echo, ls, cat [file], time";
-        else if (cmd === "ls") res = Object.keys(vfs.files).join(", ");
-        else if (cmd.startsWith("cat ")) res = vfs.files[cmd.slice(4)] || "なし";
+        else if (cmd === "ls") res = listFiles().join(", ");
+        else if (cmd.startsWith("cat ")) res = readFile(cmd.slice(4)) || "なし";
         else if (cmd === "time") res = new Date().toLocaleString();
         else if (cmd.startsWith("echo ")) res = cmd.slice(5);
         else res = "未定義コマンド";

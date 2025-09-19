@@ -1,24 +1,25 @@
-export const browser = {
-  id:'browser',
-  name:'Webビューア',
-  icon:'🌐',
-  render: function(){
-    return `<input id="url" placeholder="https://..." style="width:68%" value="https://www.example.com">
-      <button onclick="openWeb()">開く</button>
-      <iframe id="webview" src="https://www.example.com" class="webview"></iframe>
-      <script>
-      function openWeb(){
-        let u=document.getElementById('url').value;
-        if(!u.startsWith('http'))u='https://'+u;
-        document.getElementById('webview').src=u;
-      }
-      function fitIframe(){
-        let iframe=document.getElementById('webview');
-        let p=iframe.parentElement;
-        iframe.style.height=Math.max(100,p.offsetHeight-60)+'px';
-      }
-      fitIframe();
-      window.addEventListener('resize',fitIframe);
-      </script>`;
-  }
+export const meta = {
+  name: "ブラウザ",
+  icon: "https://cdn.jsdelivr.net/gh/jpgya/jpgya-OS/icons/browser.png",
+  desc: "Webページを閲覧できます"
 };
+
+export function main() {
+  const win = document.createElement('div');
+  win.className = "window";
+  win.innerHTML = `
+    <div class="window-title">ブラウザ</div>
+    <div class="window-body">
+      <input id="browser-url" type="text" value="https://www.bing.com" style="width:70%">
+      <button id="browser-go">移動</button>
+      <iframe id="browser-frame" src="https://www.bing.com" style="width:100%;height:300px;border:1px solid #ccc;margin-top:8px;"></iframe>
+    </div>
+    <button class="window-close">×</button>
+  `;
+  document.getElementById('desktop').appendChild(win);
+  win.querySelector('.window-close').onclick = () => win.remove();
+  win.querySelector('#browser-go').onclick = () => {
+    const url = win.querySelector('#browser-url').value;
+    win.querySelector('#browser-frame').src = url;
+  };
+}

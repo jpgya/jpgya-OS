@@ -1,17 +1,20 @@
 /* window.css: ウィンドウ、タスクバー、スタートメニューの凝ったデザイン */
 .window {
   position: absolute;
-  min-width: 340px;
+  min-width: 320px;
   min-height: 160px;
-  max-width: 90vw;
+  max-width: 480px;
   max-height: 70vh;
-  background: linear-gradient(120deg,#fafdff 85%,#e6eeff 100%);
-  box-shadow: 0 10px 32px #19204066, 0 1.5px 0 #3be2ff11;
-  border-radius: 13px;
+  background: #fff;
+  color: #222;
+  box-shadow: 0 0 16px #0006;
+  border-radius: 8px;
   overflow: hidden;
   border: 2px solid #3498db;
   z-index: 10;
   animation: appear 0.13s cubic-bezier(.71,1.7,.77,.97);
+  margin: 24px auto;
+  padding-bottom: 32px;
 }
 @keyframes appear {
   from { transform: scale(0.90) translateY(20px); opacity:0; }
