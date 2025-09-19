@@ -1,12 +1,14 @@
-import { createExplorer } from "./explorer.js";
-import { createEditor } from "./editor.js";
-import { createTerminal } from "./terminal.js";
-import { createBrowser } from "./browser.js";
-import { createCalc } from "./calc.js";
-export const apps = [
-  createExplorer(),
-  createEditor(),
-  createTerminal(),
-  createBrowser(),
-  createCalc()
-];
+import * as browser from "./browser.js";
+import * as calc from "./calc.js";
+import * as editor from "./editor.js";
+import * as explorer from "./explorer.js";
+import * as terminal from "./terminal.js";
+
+// アプリ一覧
+export {
+  browser,
+  calc,
+  editor,
+  explorer,
+  terminal
+};
