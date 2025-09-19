@@ -6,6 +6,7 @@ import * as terminal from "./terminal.js";
 import * as game from "./game.js";
 import * as vscode from "./vscode.js";
 import * as settings from "./settings.js";
+import * as developer from "./developer.js"; // ←追加
 
 // アプリ一覧
 export {
@@ -16,6 +17,7 @@ export {
   terminal,
   game,
   vscode,
-  settings
+  settings,
+  developer // ←追加
 };
 

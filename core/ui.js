@@ -7,12 +7,28 @@ export function showDesktop() {
   desktop.innerHTML = "";
   const installed = getInstalledApps();
   installed.forEach(appName => {
-    const meta = apps[appName]?.meta;
-    if (!meta) return;
+    let meta, launchFunc;
+    if (apps[appName]?.meta) {
+      meta = apps[appName].meta;
+      launchFunc = () => launchApp(appName);
+    } else if (localStorage.getItem("devapp:" + appName)) {
+      // 自作アプリ
+      meta = { name: appName, icon: "🧩", desc: "ユーザー作成アプリ" };
+      launchFunc = async () => {
+        const code = localStorage.getItem("devapp:" + appName);
+        const blob = new Blob([code], { type: "text/javascript" });
+        const url = URL.createObjectURL(blob);
+        const mod = await import(url);
+        if (mod.main) mod.main();
+        URL.revokeObjectURL(url);
+      };
+    } else {
+      return;
+    }
     const icon = document.createElement('div');
     icon.className = "desktop-icon";
     icon.innerHTML = `<div class="icon-emoji">${meta.icon}</div><div>${meta.name}</div>`;
-    icon.onclick = () => launchApp(appName);
+    icon.onclick = launchFunc;
     desktop.appendChild(icon);
   });
 }
