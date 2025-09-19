@@ -61,9 +61,11 @@ export function showStore() {
   desktop.innerHTML = "";
   const storeWin = document.createElement('div');
   storeWin.className = "window";
-  storeWin.innerHTML = `<div class="window-title">jpgyaStore</div>
+  storeWin.innerHTML = `
+    <div class="window-title">jpgyaStore</div>
+    <button class="window-close" style="top:10px;right:10px;">×</button>
     <div class="window-body" id="store-list"></div>
-    <button class="window-close">×</button>`;
+  `;
   desktop.appendChild(storeWin);
 
   storeWin.querySelector('.window-close').onclick = () => {
@@ -97,4 +99,27 @@ export function showStore() {
     };
     storeList.appendChild(div);
   });
+
+  makeWindowDraggable(storeWin);
+}
+
+function makeWindowDraggable(win) {
+  const title = win.querySelector('.window-title');
+  let offsetX = 0, offsetY = 0, dragging = false;
+
+  title.onmousedown = function(e) {
+    dragging = true;
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
+    document.body.style.userSelect = "none";
+  };
+  document.onmousemove = function(e) {
+    if (!dragging) return;
+    win.style.left = (e.clientX - offsetX) + "px";
+    win.style.top = (e.clientY - offsetY) + "px";
+  };
+  document.onmouseup = function() {
+    dragging = false;
+    document.body.style.userSelect = "";
+  };
 }

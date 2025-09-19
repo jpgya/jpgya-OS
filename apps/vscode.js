@@ -38,4 +38,6 @@ export function main() {
       win.querySelector('#vscode-msg').textContent = "読み込みました";
     }
   };
+
+  makeWindowDraggable(win);
 }

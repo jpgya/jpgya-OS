@@ -1,4 +1,3 @@
-
 import { readFile, writeFile } from "../core/vfs.js";
 
 export const meta = {
@@ -38,4 +37,6 @@ export function main() {
     writeFile(fn, data);
     win.querySelector('#editor-msg').textContent = "保存しました";
   };
+
+  makeWindowDraggable(win);
 }

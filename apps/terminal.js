@@ -36,6 +36,7 @@ export function main() {
         out.scrollTop = 99999;
       };
       const win = { el, title: "ターミナル" };
+      makeWindowDraggable(win);
       return win;
     }
   };

@@ -26,4 +26,5 @@ export function main() {
       win.querySelector('#calc-result').textContent = "エラー";
     }
   };
+  makeWindowDraggable(win);
 }

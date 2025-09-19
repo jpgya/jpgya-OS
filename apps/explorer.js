@@ -128,4 +128,6 @@ export function main() {
     };
     reader.readAsText(file);
   };
+
+  makeWindowDraggable(win);
 }

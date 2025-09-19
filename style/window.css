@@ -1,8 +1,10 @@
 /* window.css: ウィンドウ、タスクバー、スタートメニューの凝ったデザイン */
 .window {
   position: absolute;
+  left: 100px;
+  top: 100px;
   min-width: 340px;
-  min-height: 160px;
+  min-height: 180px;
   max-width: 520px;
   max-height: 70vh;
   background: #23272e;
@@ -15,6 +17,7 @@
   animation: fadeIn 0.25s;
   margin: 32px auto;
   padding-bottom: 36px;
+  resize: both;
 }
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(30px);}
@@ -169,6 +172,41 @@
 #start-menu .menu-app:hover {
   background: linear-gradient(90deg,#41e3ff 60%,#3498db 150%);
   color: #232946;
+}
+
+.window-body input,
+.window-body textarea,
+.window-body select,
+.window-body button {
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  padding: 8px;
+  margin: 4px 0;
+  background: #23272e;
+  color: #f3f3f3;
+  outline: none;
+  transition: border 0.2s, background 0.2s;
+}
+.window-body input:focus,
+.window-body textarea:focus,
+.window-body select:focus {
+  border: 1.5px solid #0078d4;
+  background: #1e1e1e;
+}
+.window-body button {
+  background: #0078d4;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  margin-right: 6px;
+  transition: background 0.2s;
+}
+.window-body button:hover {
+  background: #005fa3;
+}
+.window-body textarea {
+  resize: vertical;
 }
 
 @media (max-width: 600px) {

@@ -36,4 +36,6 @@ export function main() {
     }
     win.querySelector('#settings-msg').textContent = "テーマを変更しました";
   };
+
+  makeWindowDraggable(win);
 }

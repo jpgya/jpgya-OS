@@ -31,4 +31,6 @@ export function main() {
       win.querySelector('#game-msg').textContent = "もっと小さいです";
     }
   };
+
+  makeWindowDraggable(win);
 }

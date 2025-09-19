@@ -18,3 +18,6 @@ export {
   vscode,
   settings
 };
+
+// ...ウィンドウ生成後...
+makeWindowDraggable(win);
