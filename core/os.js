@@ -12,15 +12,16 @@ export function bootOS() {
   const loginError = document.getElementById('login-error');
 
   // ローカルストレージからユーザー情報取得
-  let savedUser = JSON.parse(localStorage.getItem('user'));
+  function getUser() {
+    return JSON.parse(localStorage.getItem('user'));
+  }
 
   // ログイン処理
   loginBtn.onclick = () => {
     const id = document.getElementById('login-id').value;
     const pass = document.getElementById('login-pass').value;
-    savedUser = JSON.parse(localStorage.getItem('user'));
+    const savedUser = getUser();
     if (savedUser && id === savedUser.id && pass === savedUser.pass) {
-      // ログイン成功
       loginCover.style.display = 'none';
       desktop.style.display = '';
       taskbar.style.display = '';
@@ -38,7 +39,7 @@ export function bootOS() {
       loginError.textContent = 'ユーザーIDとパスワードを入力してください';
       return;
     }
-    if (localStorage.getItem('user')) {
+    if (getUser()) {
       loginError.textContent = 'すでにユーザー登録されています';
       return;
     }
@@ -47,6 +48,7 @@ export function bootOS() {
   };
 
   // すでにログイン済みなら自動ログイン
+  const savedUser = getUser();
   if (savedUser) {
     loginCover.style.display = 'none';
     desktop.style.display = '';
