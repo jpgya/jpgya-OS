@@ -1,8 +1,9 @@
+
 import { readFile, writeFile } from "../core/vfs.js";
 
 export const meta = {
   name: "テキストエディタ",
-  icon: "https://cdn.jsdelivr.net/gh/jpgya/jpgya-OS/icons/editor.png",
+  icon: "📝", // 画像URLから絵文字へ
   desc: "テキストファイルの編集"
 };
 

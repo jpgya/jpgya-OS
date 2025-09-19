@@ -1,5 +1,12 @@
 import { listFiles, readFile, writeFile, deleteFile } from "../core/vfs.js";
-export function createTerminal() {
+
+export const meta = {
+  name: "ターミナル",
+  icon: "💻", // 画像URLから絵文字へ
+  desc: "簡易コマンドライン"
+};
+
+export function main() {
   return {
     id: "terminal",
     name: "ターミナル",

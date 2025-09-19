@@ -1,6 +1,6 @@
 export const meta = {
   name: "電卓",
-  icon: "https://cdn.jsdelivr.net/gh/jpgya/jpgya-OS/icons/calc.png",
+  icon: "🧮", // 画像URLから絵文字へ
   desc: "シンプルな電卓アプリ"
 };
 

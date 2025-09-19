@@ -11,7 +11,7 @@ export function showDesktop() {
     if (!meta) return;
     const icon = document.createElement('div');
     icon.className = "desktop-icon";
-    icon.innerHTML = `<img src="${meta.icon}" alt="${meta.name}"><div>${meta.name}</div>`;
+    icon.innerHTML = `<div class="icon-emoji">${meta.icon}</div><div>${meta.name}</div>`;
     icon.onclick = () => launchApp(appName);
     desktop.appendChild(icon);
   });
@@ -80,7 +80,7 @@ export function showStore() {
     const div = document.createElement('div');
     div.className = "store-app";
     div.innerHTML = `
-      <img src="${meta.icon}" alt="${meta.name}">
+      <div class="icon-emoji">${meta.icon}</div>
       <div class="store-app-info">
         <div class="store-app-title">${meta.name}</div>
         <div class="store-app-desc">${meta.desc}</div>

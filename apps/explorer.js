@@ -1,8 +1,8 @@
-import { listFiles, readFile, vfs, saveVFS } from "../core/vfs.js";
+import { listFiles, readFile } from "../core/vfs.js";
 
 export const meta = {
   name: "ファイル管理",
-  icon: "https://cdn.jsdelivr.net/gh/jpgya/jpgya-OS/icons/explorer.png",
+  icon: "📁", // 画像URLから絵文字へ
   desc: "仮想ファイルシステムの閲覧"
 };
 

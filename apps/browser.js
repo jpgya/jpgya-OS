@@ -1,6 +1,6 @@
 export const meta = {
   name: "ブラウザ",
-  icon: "https://cdn.jsdelivr.net/gh/jpgya/jpgya-OS/icons/browser.png",
+  icon: "🌐", // 画像URLから絵文字へ
   desc: "Webページを閲覧できます"
 };
 
