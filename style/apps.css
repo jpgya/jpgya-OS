@@ -251,3 +251,9 @@ button.exec:hover { background: linear-gradient(90deg,#3498db 60%,#41e3ff 120%);
   align-items: center;
   justify-content: center;
 }
+
+#store-list {
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
