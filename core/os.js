@@ -1,7 +1,6 @@
 import { showDesktop, showStartMenu, showStore } from "./ui.js";
 import * as apps from "../apps/apps.js";
 
-// ログイン状態・ユーザー管理
 export function bootOS() {
   const loginCover = document.getElementById('login-cover');
   const desktop = document.getElementById('desktop');
@@ -13,15 +12,24 @@ export function bootOS() {
 
   // ユーザー情報取得
   function getUser() {
-    return JSON.parse(localStorage.getItem('user'));
+    try {
+      return JSON.parse(localStorage.getItem('user'));
+    } catch {
+      return null;
+    }
   }
 
   // ログイン処理
   loginBtn.onclick = () => {
-    const id = document.getElementById('login-id').value;
+    const id = document.getElementById('login-id').value.trim();
     const pass = document.getElementById('login-pass').value;
     const savedUser = getUser();
-    if (savedUser && id === savedUser.id && pass === savedUser.pass) {
+    if (!savedUser) {
+      loginError.textContent = 'ユーザーが登録されていません。新規登録してください。';
+      return;
+    }
+    if (id === savedUser.id && pass === savedUser.pass) {
+      loginError.textContent = '';
       loginCover.style.display = 'none';
       desktop.style.display = '';
       taskbar.style.display = '';
@@ -33,24 +41,27 @@ export function bootOS() {
 
   // 新規登録処理
   registerBtn.onclick = () => {
-    const id = document.getElementById('login-id').value;
+    const id = document.getElementById('login-id').value.trim();
     const pass = document.getElementById('login-pass').value;
     if (!id || !pass) {
       loginError.textContent = 'ユーザーIDとパスワードを入力してください';
       return;
     }
-    // 上書きで新規登録できるようにする
     localStorage.setItem('user', JSON.stringify({ id, pass }));
     loginError.textContent = '登録が完了しました。ログインしてください。';
   };
 
-  // すでにログイン済みなら自動ログイン
+  // 自動ログイン（すでにユーザーが登録されている場合のみ）
   const savedUser = getUser();
   if (savedUser) {
     loginCover.style.display = 'none';
     desktop.style.display = '';
     taskbar.style.display = '';
     showDesktop();
+  } else {
+    loginCover.style.display = '';
+    desktop.style.display = 'none';
+    taskbar.style.display = 'none';
   }
 
   // スタートボタン
