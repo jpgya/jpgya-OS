@@ -8,23 +8,18 @@ export function bootOS() {
   const taskbar = document.getElementById('taskbar');
   const startBtn = document.getElementById('start-btn');
   const loginBtn = document.getElementById('login-btn');
+  const registerBtn = document.getElementById('register-btn');
   const loginError = document.getElementById('login-error');
 
   // ローカルストレージからユーザー情報取得
-  const savedUser = JSON.parse(localStorage.getItem('user'));
+  let savedUser = JSON.parse(localStorage.getItem('user'));
 
   // ログイン処理
   loginBtn.onclick = () => {
     const id = document.getElementById('login-id').value;
     const pass = document.getElementById('login-pass').value;
-    if (!savedUser) {
-      // 初回登録
-      localStorage.setItem('user', JSON.stringify({ id, pass }));
-      loginCover.style.display = 'none';
-      desktop.style.display = '';
-      taskbar.style.display = '';
-      showDesktop();
-    } else if (id === savedUser.id && pass === savedUser.pass) {
+    savedUser = JSON.parse(localStorage.getItem('user'));
+    if (savedUser && id === savedUser.id && pass === savedUser.pass) {
       // ログイン成功
       loginCover.style.display = 'none';
       desktop.style.display = '';
@@ -33,6 +28,22 @@ export function bootOS() {
     } else {
       loginError.textContent = 'ユーザーIDまたはパスワードが違います';
     }
+  };
+
+  // 新規登録処理
+  registerBtn.onclick = () => {
+    const id = document.getElementById('login-id').value;
+    const pass = document.getElementById('login-pass').value;
+    if (!id || !pass) {
+      loginError.textContent = 'ユーザーIDとパスワードを入力してください';
+      return;
+    }
+    if (localStorage.getItem('user')) {
+      loginError.textContent = 'すでにユーザー登録されています';
+      return;
+    }
+    localStorage.setItem('user', JSON.stringify({ id, pass }));
+    loginError.textContent = '登録が完了しました。ログインしてください。';
   };
 
   // すでにログイン済みなら自動ログイン
