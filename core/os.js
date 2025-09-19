@@ -11,7 +11,7 @@ export function bootOS() {
   const registerBtn = document.getElementById('register-btn');
   const loginError = document.getElementById('login-error');
 
-  // ローカルストレージからユーザー情報取得
+  // ユーザー情報取得
   function getUser() {
     return JSON.parse(localStorage.getItem('user'));
   }
@@ -39,10 +39,7 @@ export function bootOS() {
       loginError.textContent = 'ユーザーIDとパスワードを入力してください';
       return;
     }
-    if (getUser()) {
-      loginError.textContent = 'すでにユーザー登録されています';
-      return;
-    }
+    // 上書きで新規登録できるようにする
     localStorage.setItem('user', JSON.stringify({ id, pass }));
     loginError.textContent = '登録が完了しました。ログインしてください。';
   };
