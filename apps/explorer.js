@@ -1,9 +1,9 @@
-import { listFiles, readFile } from "../core/vfs.js";
+import { listFiles, readFile, writeFile, deleteFile } from "../core/vfs.js";
 
 export const meta = {
   name: "ファイル管理",
-  icon: "📁", // 画像URLから絵文字へ
-  desc: "仮想ファイルシステムの閲覧"
+  icon: "📁",
+  desc: "仮想ファイルシステムの閲覧・ダウンロード"
 };
 
 export function main() {
@@ -12,8 +12,29 @@ export function main() {
   win.innerHTML = `
     <div class="window-title">ファイル管理</div>
     <div class="window-body">
-      <ul id="explorer-list"></ul>
-      <div id="explorer-content"></div>
+      <div style="display:flex;gap:24px;">
+        <div style="flex:1;">
+          <div style="font-weight:bold;margin-bottom:8px;">ファイル一覧</div>
+          <ul id="explorer-list" style="list-style:none;padding:0;margin:0;max-height:200px;overflow:auto;"></ul>
+          <button id="explorer-refresh" style="margin-top:8px;">再読み込み</button>
+        </div>
+        <div style="flex:2;">
+          <div style="font-weight:bold;margin-bottom:8px;">内容</div>
+          <textarea id="explorer-content" style="width:100%;height:120px;"></textarea>
+          <div style="margin-top:8px;">
+            <button id="explorer-save">保存</button>
+            <button id="explorer-delete">削除</button>
+            <button id="explorer-download">ダウンロード</button>
+          </div>
+          <div id="explorer-msg" style="margin-top:8px;color:#0af;"></div>
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <input id="explorer-newname" type="text" placeholder="新規ファイル名" style="width:160px;">
+        <button id="explorer-new">新規作成</button>
+        <input id="explorer-upload" type="file" style="display:none;">
+        <button id="explorer-upload-btn">アップロード</button>
+      </div>
     </div>
     <button class="window-close">×</button>
   `;
@@ -21,34 +42,90 @@ export function main() {
   win.querySelector('.window-close').onclick = () => win.remove();
 
   const list = win.querySelector('#explorer-list');
-  list.innerHTML = "";
-  listFiles().forEach(fn => {
-    const li = document.createElement('li');
-    li.textContent = fn;
-    li.onclick = () => {
-      win.querySelector('#explorer-content').textContent = readFile(fn);
-    };
-    list.appendChild(li);
-  });
+  const content = win.querySelector('#explorer-content');
+  const msg = win.querySelector('#explorer-msg');
+  let currentFile = null;
 
-  const el = document.createElement("div");
-  el.className = "window";
-  el.innerHTML = `
-    <div class="titlebar">📁 ファイルエクスプローラ <button class="close">×</button></div>
-    <div class="content">
-      <ul class="file-list">
-        ${Object.keys(vfs.files).map(f => `<li>${f} <button data-f="${f}">編集</button></li>`).join("")}
-      </ul>
-      <input class="newfile" placeholder="新ファイル名">
-      <button class="add">作成</button>
-    </div>`;
-  el.querySelector(".close").onclick = () => window.OS.closeWin(win);
-  el.querySelector(".add").onclick = () => {
-    const name = el.querySelector(".newfile").value.trim();
-    if (name && !vfs.files[name]) { vfs.files[name] = ""; saveVFS(); window.OS.openApp("explorer"); }
+  function refreshList() {
+    list.innerHTML = "";
+    listFiles().forEach(fn => {
+      const li = document.createElement('li');
+      li.textContent = fn;
+      li.style.cursor = "pointer";
+      li.style.padding = "4px 0";
+      li.onclick = () => {
+        currentFile = fn;
+        content.value = readFile(fn) || "";
+        msg.textContent = fn + " を読み込みました";
+      };
+      list.appendChild(li);
+    });
+  }
+  refreshList();
+
+  win.querySelector('#explorer-refresh').onclick = refreshList;
+
+  win.querySelector('#explorer-save').onclick = () => {
+    if (!currentFile) {
+      msg.textContent = "ファイルを選択してください";
+      return;
+    }
+    writeFile(currentFile, content.value);
+    msg.textContent = "保存しました";
+    refreshList();
   };
-  el.querySelectorAll("[data-f]").forEach(btn => {
-    btn.onclick = () => window.OS.openApp("editor", btn.dataset.f);
-  });
-  const fileWin = { el, title: "ファイル" };
+
+  win.querySelector('#explorer-delete').onclick = () => {
+    if (!currentFile) {
+      msg.textContent = "ファイルを選択してください";
+      return;
+    }
+    deleteFile(currentFile);
+    msg.textContent = "削除しました";
+    content.value = "";
+    currentFile = null;
+    refreshList();
+  };
+
+  win.querySelector('#explorer-new').onclick = () => {
+    const fn = win.querySelector('#explorer-newname').value;
+    if (!fn) {
+      msg.textContent = "ファイル名を入力してください";
+      return;
+    }
+    writeFile(fn, "");
+    msg.textContent = "新規作成しました";
+    refreshList();
+  };
+
+  // 外部ファイルのダウンロード
+  win.querySelector('#explorer-download').onclick = () => {
+    if (!currentFile) {
+      msg.textContent = "ファイルを選択してください";
+      return;
+    }
+    const blob = new Blob([content.value], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = currentFile;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    msg.textContent = "ダウンロードしました";
+  };
+
+  // 外部ファイルのアップロード
+  win.querySelector('#explorer-upload-btn').onclick = () => {
+    win.querySelector('#explorer-upload').click();
+  };
+  win.querySelector('#explorer-upload').onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      writeFile(file.name, ev.target.result);
+      msg.textContent = file.name + " をアップロードしました";
+      refreshList();
+    };
+    reader.readAsText(file);
+  };
 }

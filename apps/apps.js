@@ -3,6 +3,9 @@ import * as calc from "./calc.js";
 import * as editor from "./editor.js";
 import * as explorer from "./explorer.js";
 import * as terminal from "./terminal.js";
+import * as game from "./game.js";
+import * as vscode from "./vscode.js";
+import * as settings from "./settings.js";
 
 // アプリ一覧
 export {
@@ -10,5 +13,8 @@ export {
   calc,
   editor,
   explorer,
-  terminal
+  terminal,
+  game,
+  vscode,
+  settings
 };
