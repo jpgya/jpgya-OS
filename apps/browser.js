@@ -1,3 +1,5 @@
+import { makeWindowDraggable } from "../core/ui.js";
+
 export const meta = {
   name: "ブラウザ",
   icon: "🌐",
@@ -25,6 +27,9 @@ export function main() {
     </div>
   `;
   document.getElementById('desktop').appendChild(win);
+
+  // ウィンドウをドラッグ可能にする
+  makeWindowDraggable(win.querySelector('.titlebar'), win);
 
   // 閉じるボタン
   win.querySelector('.window-btn.close').onclick = () => win.remove();

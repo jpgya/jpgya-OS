@@ -1,3 +1,5 @@
+import { makeWindowDraggable } from "../core/ui.js";
+
 export const meta = {
   name: "電卓",
   icon: "🧮", // 画像URLから絵文字へ

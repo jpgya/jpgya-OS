@@ -103,8 +103,9 @@ export function showStore() {
   makeWindowDraggable(storeWin);
 }
 
-function makeWindowDraggable(win) {
-  const title = win.querySelector('.window-title');
+export function makeWindowDraggable(win) {
+  const title = win.querySelector('.titlebar, .window-title');
+  if (!title) return;
   let offsetX = 0, offsetY = 0, dragging = false;
 
   title.onmousedown = function(e) {

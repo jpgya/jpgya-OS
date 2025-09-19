@@ -1,3 +1,5 @@
+import { makeWindowDraggable } from "../core/ui.js";
+
 export const meta = {
   name: "VSCode風エディタ",
   icon: "🖥️",

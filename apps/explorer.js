@@ -1,4 +1,5 @@
 import { listFiles, readFile, writeFile, deleteFile } from "../core/vfs.js";
+import { makeWindowDraggable } from "../core/ui.js";
 
 export const meta = {
   name: "ファイル管理",

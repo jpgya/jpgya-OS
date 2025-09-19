@@ -19,5 +19,3 @@ export {
   settings
 };
 
-// ...ウィンドウ生成後...
-makeWindowDraggable(win);
