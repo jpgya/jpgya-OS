@@ -6,8 +6,12 @@ export const meta = {
   desc: "VSCode風の簡易エディタ"
 };
 
-export function main(container) {
-  const win = container || createAppWindow(meta.name, `
+export function main() {
+  const win = createAppWindow(meta.name, `
+    <div class="titlebar">
+      <span>${meta.icon} ${meta.name}</span>
+      <div class="window-close">×</div>
+    </div>
     <div class="window-body">
       <textarea id="vscode-editor" style="width:98%;height:200px;font-family:monospace;background:#1e1e1e;color:#fff;border:1px solid #444;border-radius:4px;"></textarea>
       <div style="margin-top:6px;">
@@ -42,6 +46,12 @@ export function main(container) {
     }
   };
 
+  // 閉じるボタン
+  const closeBtn = win.querySelector('.window-close');
+  if (closeBtn) closeBtn.onclick = () => win.remove();
+
   makeWindowDraggable(win);
-  win.querySelector('.window-close').onclick = () => win.remove();
+  document.getElementById('desktop').appendChild(win);
+
+  return win;
 }

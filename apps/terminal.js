@@ -7,8 +7,13 @@ export const meta = {
   desc: "簡易コマンドライン"
 };
 
-export function main(container) {
-  const win = container || createAppWindow(meta.name, `
+export function main() {
+  // ウィンドウ生成
+  const win = createAppWindow(meta.name, `
+    <div class="titlebar">
+      <span>${meta.icon} ${meta.name}</span>
+      <div class="window-close">×</div>
+    </div>
     <div class="window-body">
       <div class="termout" style="font-family:monospace;background:#222;color:#0f0;padding:8px;min-height:80px;overflow:auto;"></div>
       <div style="margin-top:6px;">
@@ -42,9 +47,14 @@ export function main(container) {
     input.value = "";
   };
 
-  win.querySelector('.window-close').onclick = () => win.remove();
+  // 閉じるボタン
+  const closeBtn = win.querySelector('.window-close');
+  if (closeBtn) closeBtn.onclick = () => win.remove();
 
   makeWindowDraggable(win);
+
+  // デスクトップに追加
+  document.getElementById('desktop').appendChild(win);
 
   return win;
 }

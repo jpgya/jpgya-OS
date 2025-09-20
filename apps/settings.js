@@ -6,8 +6,13 @@ export const meta = {
   desc: "OSの簡易設定"
 };
 
-export function main(container) {
-  const win = container || createAppWindow(meta.name, `
+export function main() {
+  // ウィンドウ生成
+  const win = createAppWindow(meta.name, `
+    <div class="titlebar">
+      <span>${meta.icon} ${meta.name}</span>
+      <div class="window-close">×</div>
+    </div>
     <div class="window-body">
       <div>
         <label>テーマ色: </label>
@@ -22,6 +27,8 @@ export function main(container) {
   `);
 
   const msg = win.querySelector('#settings-msg');
+
+  // 適用ボタン
   win.querySelector('#settings-apply').onclick = () => {
     const theme = win.querySelector('#settings-theme').value;
     if (theme === "light") {
@@ -34,6 +41,12 @@ export function main(container) {
     msg.textContent = "テーマを変更しました";
   };
 
+  // ウィンドウ閉じる
+  const closeBtn = win.querySelector('.window-close');
+  if (closeBtn) closeBtn.onclick = () => win.remove();
+
   makeWindowDraggable(win);
-  win.querySelector('.window-close').onclick = () => win.remove();
+
+  // デスクトップに追加
+  document.getElementById('desktop').appendChild(win);
 }
