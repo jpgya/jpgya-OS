@@ -76,3 +76,31 @@ export function bootOS() {
     }
   }
 }
+// os.js
+
+// インストール済みアプリを取得
+export function getInstalledApps() {
+  return JSON.parse(localStorage.getItem("installedApps") || "[]");
+}
+
+// アプリをインストール
+export function installApp(appName) {
+  const apps = getInstalledApps();
+  if (!apps.includes(appName)) {
+    apps.push(appName);
+    localStorage.setItem("installedApps", JSON.stringify(apps));
+  }
+}
+
+// アプリをアンインストール
+export function uninstallApp(appName) {
+  const apps = getInstalledApps().filter(a => a !== appName);
+  localStorage.setItem("installedApps", JSON.stringify(apps));
+}
+
+// アプリを起動
+export function launchApp(appName) {
+  const meta = JSON.parse(localStorage.getItem("devapp:" + appName) || "{}");
+  console.log("Launching app:", appName);
+  // ここでウィンドウを開く場合は、createAppWindow() を呼ぶ
+}
