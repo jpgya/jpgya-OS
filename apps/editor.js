@@ -1,43 +1,35 @@
-import { readFile, writeFile } from "../core/vfs.js";
-import { makeWindowDraggable } from "../core/ui.js";
+import { createAppWindow } from "../core/ui.js";
 
 export const meta = {
   name: "テキストエディタ",
-  icon: "📝", // 画像URLから絵文字へ
+  icon: "📝",
   desc: "テキストファイルの編集"
 };
 
 export function main() {
-  const win = document.createElement('div');
-  win.className = "window";
-  win.innerHTML = `
-    <div class="window-title">テキストエディタ</div>
-    <div class="window-body">
-      <input id="editor-filename" type="text" placeholder="ファイル名" style="width:90%">
-      <textarea id="editor-content" style="width:98%;height:180px;"></textarea>
-      <div>
-        <button id="editor-load">開く</button>
-        <button id="editor-save">保存</button>
-      </div>
-      <div id="editor-msg"></div>
+  const win = createAppWindow(meta.name, `
+    <textarea id="editor-text" style="width:98%;height:180px;font-size:16px;border-radius:8px;background:#181c20;color:#fff;border:1px solid #444;"></textarea>
+    <div style="margin-top:8px;">
+      <button id="editor-save">保存</button>
+      <button id="editor-load">開く</button>
+      <input id="editor-filename" type="text" placeholder="ファイル名" style="width:120px;">
     </div>
-    <button class="window-close">×</button>
-  `;
-  document.getElementById('desktop').appendChild(win);
-  win.querySelector('.window-close').onclick = () => win.remove();
+    <div id="editor-msg" style="margin-top:8px;color:#0af;"></div>
+  `);
 
-  win.querySelector('#editor-load').onclick = () => {
-    const fn = win.querySelector('#editor-filename').value;
-    const data = readFile(fn);
-    win.querySelector('#editor-content').value = data || "";
-    win.querySelector('#editor-msg').textContent = data ? "読み込み成功" : "ファイルなし";
-  };
   win.querySelector('#editor-save').onclick = () => {
     const fn = win.querySelector('#editor-filename').value;
-    const data = win.querySelector('#editor-content').value;
-    writeFile(fn, data);
-    win.querySelector('#editor-msg').textContent = "保存しました";
+    const data = win.querySelector('#editor-text').value;
+    if (fn) {
+      localStorage.setItem("vfs:" + fn, data);
+      win.querySelector('#editor-msg').textContent = "保存しました";
+    }
   };
-
-  makeWindowDraggable(win);
+  win.querySelector('#editor-load').onclick = () => {
+    const fn = win.querySelector('#editor-filename').value;
+    if (fn) {
+      win.querySelector('#editor-text').value = localStorage.getItem("vfs:" + fn) || "";
+      win.querySelector('#editor-msg').textContent = "読み込みました";
+    }
+  };
 }

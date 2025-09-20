@@ -119,8 +119,11 @@ export function showStore() {
   makeWindowDraggable(storeWin);
 }
 
+let topZ = 100;
+let tasks = [];
+
 export function makeWindowDraggable(win) {
-  const title = win.querySelector('.titlebar, .window-title');
+  const title = win.querySelector('.titlebar');
   if (!title) return;
   let offsetX = 0, offsetY = 0, dragging = false;
 
@@ -129,6 +132,7 @@ export function makeWindowDraggable(win) {
     offsetX = e.clientX - win.offsetLeft;
     offsetY = e.clientY - win.offsetTop;
     document.body.style.userSelect = "none";
+    makeWindowActive(win);
   };
   document.onmousemove = function(e) {
     if (!dragging) return;
@@ -138,5 +142,111 @@ export function makeWindowDraggable(win) {
   document.onmouseup = function() {
     dragging = false;
     document.body.style.userSelect = "";
+  };
+}
+
+export function makeWindowActive(win) {
+  topZ++;
+  win.style.zIndex = topZ;
+  document.querySelectorAll('.window').forEach(w => w.classList.remove('active'));
+  win.classList.add('active');
+}
+
+export function addTask(appName, win) {
+  tasks.push({ appName, win });
+  updateTaskbar();
+}
+
+function updateTaskbar() {
+  const tasksDiv = document.getElementById('tasks');
+  if (!tasksDiv) return;
+  tasksDiv.innerHTML = "";
+  tasks.forEach(({ appName, win }, i) => {
+    const btn = document.createElement('button');
+    btn.className = "task";
+    btn.textContent = appName;
+    btn.onclick = () => {
+      win.style.display = "";
+      makeWindowActive(win);
+    };
+    tasksDiv.appendChild(btn);
+  });
+}
+
+// ウィンドウ生成時の例
+export function createAppWindow(appName, contentHTML) {
+  const win = document.createElement('div');
+  win.className = "window";
+  win.innerHTML = `
+    <div class="titlebar">
+      ${appName}
+      <div class="window-btns">
+        <button class="window-btn min">ー</button>
+        <button class="window-btn max">□</button>
+        <button class="window-btn close">×</button>
+      </div>
+    </div>
+    <div class="window-body">${contentHTML}</div>
+  `;
+  win.style.left = "120px";
+  win.style.top = "120px";
+  document.getElementById('desktop').appendChild(win);
+  makeWindowDraggable(win);
+  makeWindowActive(win);
+  addTask(appName, win);
+
+  // 最小化
+  win.querySelector('.window-btn.min').onclick = () => win.style.display = "none";
+  // 最大化/元に戻す
+  win.querySelector('.window-btn.max').onclick = () => {
+    if (win.classList.contains('maxed')) {
+      win.classList.remove('maxed');
+      win.style.left = win.dataset.oldLeft;
+      win.style.top = win.dataset.oldTop;
+      win.style.width = win.dataset.oldWidth;
+      win.style.height = win.dataset.oldHeight;
+    } else {
+      win.dataset.oldLeft = win.style.left;
+      win.dataset.oldTop = win.style.top;
+      win.dataset.oldWidth = win.style.width;
+      win.dataset.oldHeight = win.style.height;
+      win.classList.add('maxed');
+      win.style.left = "0";
+      win.style.top = "0";
+      win.style.width = "100vw";
+      win.style.height = "100vh";
+    }
+    makeWindowActive(win);
+  };
+  // 閉じる
+  win.querySelector('.window-btn.close').onclick = () => {
+    win.remove();
+    tasks = tasks.filter(t => t.win !== win);
+    updateTaskbar();
+  };
+
+  // アクティブ化
+  win.onmousedown = () => makeWindowActive(win);
+
+  return win;
+}
+
+// スタートメニュー
+export function showStartMenu(apps) {
+  const menu = document.getElementById('start-menu');
+  menu.innerHTML = `<div id="start-app-list"></div>`;
+  const list = menu.querySelector('#start-app-list');
+  Object.keys(apps).forEach(appName => {
+    const btn = document.createElement('button');
+    btn.textContent = `${apps[appName].meta.icon} ${apps[appName].meta.name}`;
+    btn.onclick = () => {
+      apps[appName].main();
+      menu.style.display = "none";
+    };
+    list.appendChild(btn);
+  });
+  menu.style.display = "";
+  document.body.onclick = e => {
+    if (!menu.contains(e.target) && e.target.id !== "start-btn") menu.style.display = "none";
   };
 }
