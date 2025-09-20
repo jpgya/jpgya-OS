@@ -10,13 +10,9 @@ export function main() {
   const win = document.createElement('div');
   win.className = "window";
   win.innerHTML = `
-    <div class="window-title">電卓</div>
-    <div class="window-body">
-      <input id="calc-input" type="text" style="width:90%">
-      <button id="calc-eval">=</button>
-      <div id="calc-result"></div>
-    </div>
-    <button class="window-close">×</button>
+    <input id="calc-input" type="text" style="width:90%">
+    <button id="calc-eval">=</button>
+    <div id="calc-result"></div>
   `;
   document.getElementById('desktop').appendChild(win);
   win.querySelector('.window-close').onclick = () => win.remove();

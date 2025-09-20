@@ -11,7 +11,6 @@ export function main() {
   const win = document.createElement('div');
   win.className = "window";
   win.innerHTML = `
-    <div class="window-title">ファイル管理</div>
     <div class="window-body">
       <div style="display:flex;gap:24px;">
         <div style="flex:1;">
@@ -36,8 +35,7 @@ export function main() {
         <input id="explorer-upload" type="file" style="display:none;">
         <button id="explorer-upload-btn">アップロード</button>
       </div>
-    </div>
-    <button class="window-close">×</button>
+    
   `;
   document.getElementById('desktop').appendChild(win);
   win.querySelector('.window-close').onclick = () => win.remove();

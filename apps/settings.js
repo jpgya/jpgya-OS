@@ -10,7 +10,7 @@ export function main() {
   const win = document.createElement('div');
   win.className = "window";
   win.innerHTML = `
-    <div class="window-title">設定</div>
+    
     <div class="window-body">
       <div>
         <label>テーマ色: </label>
@@ -22,7 +22,7 @@ export function main() {
       <button id="settings-apply">適用</button>
       <div id="settings-msg"></div>
     </div>
-    <button class="window-close">×</button>
+    
   `;
   document.getElementById('desktop').appendChild(win);
   win.querySelector('.window-close').onclick = () => win.remove();

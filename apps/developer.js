@@ -10,7 +10,7 @@ export function main() {
   const win = document.createElement('div');
   win.className = "window";
   win.innerHTML = `
-    <div class="titlebar">デベロッパー</div>
+    
     <div class="window-body">
       <div style="margin-bottom:8px;">
         <input id="dev-app-name" placeholder="アプリ名" style="width:32%">
@@ -40,8 +40,7 @@ export function main() {
         export function main() { alert("Hello!"); }
         </code>
       </div>
-    </div>
-    <button class="window-close">×</button>
+    
   `;
   document.getElementById('desktop').appendChild(win);
   makeWindowDraggable(win);

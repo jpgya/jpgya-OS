@@ -10,13 +10,7 @@ export function main() {
   const win = document.createElement('div');
   win.className = "window";
   win.innerHTML = `
-    <div class="titlebar">
-      ブラウザ
-      <div class="window-btns">
-        <button class="window-btn close">×</button>
-      </div>
-    </div>
-    <div class="window-body">
+    
       <input id="browser-url" type="text" value="https://example.com" style="width:60%">
       <button id="browser-go">移動</button>
       <button id="browser-newtab">新しいタブで開く</button>
@@ -24,7 +18,7 @@ export function main() {
         <iframe id="browser-frame" src="https://example.com" style="width:100%;height:300px;border:1px solid #ccc;background:#fff;border-radius:8px;"></iframe>
       </div>
       <div id="browser-msg" style="color:#e74c3c;margin-top:6px;font-size:13px;"></div>
-    </div>
+    
   `;
   document.getElementById('desktop').appendChild(win);
 

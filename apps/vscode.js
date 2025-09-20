@@ -10,7 +10,7 @@ export function main() {
   const win = document.createElement('div');
   win.className = "window";
   win.innerHTML = `
-    <div class="window-title">VSCode風エディタ</div>
+    
     <div class="window-body">
       <textarea id="vscode-editor" style="width:98%;height:200px;font-family:monospace;background:#1e1e1e;color:#fff;border:1px solid #444;border-radius:4px;"></textarea>
       <div>
@@ -20,7 +20,7 @@ export function main() {
       </div>
       <div id="vscode-msg"></div>
     </div>
-    <button class="window-close">×</button>
+    
   `;
   document.getElementById('desktop').appendChild(win);
   win.querySelector('.window-close').onclick = () => win.remove();

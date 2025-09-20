@@ -16,7 +16,7 @@ export function main() {
       const el = document.createElement("div");
       el.className = "window";
       el.innerHTML = `
-        <div class="titlebar">💻 ターミナル <button class="close">×</button></div>
+        
         <div class="content">
           <div class="termout" style="font-family:monospace;background:#222;color:#0f0;padding:8px;min-height:50px;"></div>
           <input class="termcmd" placeholder="help でコマンド一覧">
