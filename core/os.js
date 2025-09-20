@@ -100,7 +100,14 @@ export function uninstallApp(appName) {
 
 // アプリを起動
 export function launchApp(appName) {
-  const meta = JSON.parse(localStorage.getItem("devapp:" + appName) || "{}");
-  console.log("Launching app:", appName);
-  // ここでウィンドウを開く場合は、createAppWindow() を呼ぶ
+  const app = apps[appName];
+  if (!app) return;
+
+  // main() がある場合はそれを呼ぶ
+  if (app.main) {
+    app.main();
+  } else {
+    // main() がなければ説明ウィンドウ
+    createAppWindow(app.meta.name, `<p>${app.meta.desc || ""}</p>`);
+  }
 }
