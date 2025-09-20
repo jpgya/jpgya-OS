@@ -174,29 +174,56 @@ function updateTaskbar() {
 }
 
 // ウィンドウ生成時の例
-export function createAppWindow(appName, contentHTML) {
+export function createAppWindow(appName, contentHTMLOrAppMain) {
   const win = document.createElement('div');
   win.className = "window";
-  win.innerHTML = `
-    <div class="titlebar">
-      ${appName}
-      <div class="window-btns">
-        <button class="window-btn min">ー</button>
-        <button class="window-btn max">□</button>
-        <button class="window-btn close">×</button>
-      </div>
-    </div>
-    <div class="window-body">${contentHTML}</div>
-  `;
   win.style.left = "120px";
   win.style.top = "120px";
-  document.getElementById('desktop').appendChild(win);
-  makeWindowDraggable(win);
-  makeWindowActive(win);
-  addTask(appName, win);
+
+  // contentHTMLOrAppMain が関数なら main() を呼ぶ
+  if (typeof contentHTMLOrAppMain === "function") {
+    // 一旦空のウィンドウ生成
+    win.innerHTML = `
+      <div class="titlebar">
+        ${appName}
+        <div class="window-btns">
+          <button class="window-btn min">ー</button>
+          <button class="window-btn max">□</button>
+          <button class="window-btn close">×</button>
+        </div>
+      </div>
+      <div class="window-body"></div>
+    `;
+    document.getElementById('desktop').appendChild(win);
+    makeWindowDraggable(win);
+    makeWindowActive(win);
+    addTask(appName, win);
+
+    // アプリの main() を呼ぶ
+    contentHTMLOrAppMain(win.querySelector('.window-body'), win);
+
+  } else {
+    // 普通の HTML を表示する場合
+    win.innerHTML = `
+      <div class="titlebar">
+        ${appName}
+        <div class="window-btns">
+          <button class="window-btn min">ー</button>
+          <button class="window-btn max">□</button>
+          <button class="window-btn close">×</button>
+        </div>
+      </div>
+      <div class="window-body">${contentHTMLOrAppMain}</div>
+    `;
+    document.getElementById('desktop').appendChild(win);
+    makeWindowDraggable(win);
+    makeWindowActive(win);
+    addTask(appName, win);
+  }
 
   // 最小化
   win.querySelector('.window-btn.min').onclick = () => win.style.display = "none";
+
   // 最大化/元に戻す
   win.querySelector('.window-btn.max').onclick = () => {
     if (win.classList.contains('maxed')) {
@@ -218,6 +245,7 @@ export function createAppWindow(appName, contentHTML) {
     }
     makeWindowActive(win);
   };
+
   // 閉じる
   win.querySelector('.window-btn.close').onclick = () => {
     win.remove();
