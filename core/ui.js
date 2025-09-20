@@ -1,4 +1,4 @@
-import { getInstalledApps, installApp, uninstallApp, launchApp } from "./os.js";
+import { getInstalledApps, installApp, uninstallApp,} from "./os.js";
 import * as apps from "../apps/apps.js";
 
 // デスクトップ表示
