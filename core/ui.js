@@ -123,7 +123,7 @@ let topZ = 100;
 let tasks = [];
 
 export function makeWindowDraggable(win) {
-  const title = win.querySelector('.titlebar');
+  const title = win.querySelector('.titlebar, .window-title');
   if (!title) return;
   let offsetX = 0, offsetY = 0, dragging = false;
 
@@ -229,24 +229,4 @@ export function createAppWindow(appName, contentHTML) {
   win.onmousedown = () => makeWindowActive(win);
 
   return win;
-}
-
-// スタートメニュー
-export function showStartMenu(apps) {
-  const menu = document.getElementById('start-menu');
-  menu.innerHTML = `<div id="start-app-list"></div>`;
-  const list = menu.querySelector('#start-app-list');
-  Object.keys(apps).forEach(appName => {
-    const btn = document.createElement('button');
-    btn.textContent = `${apps[appName].meta.icon} ${apps[appName].meta.name}`;
-    btn.onclick = () => {
-      apps[appName].main();
-      menu.style.display = "none";
-    };
-    list.appendChild(btn);
-  });
-  menu.style.display = "";
-  document.body.onclick = e => {
-    if (!menu.contains(e.target) && e.target.id !== "start-btn") menu.style.display = "none";
-  };
 }
