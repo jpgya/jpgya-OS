@@ -99,15 +99,3 @@ export function uninstallApp(appName) {
 }
 
 // アプリを起動
-export function launchApp(appName) {
-  const app = apps[appName];
-  if (!app) return;
-
-  // main() がある場合はそれを呼ぶ
-  if (app.main) {
-    app.main();
-  } else {
-    // main() がなければ説明ウィンドウ
-    createAppWindow(app.meta.name, `<p>${app.meta.desc || ""}</p>`);
-  }
-}

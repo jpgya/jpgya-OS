@@ -182,44 +182,48 @@ export function createAppWindow(appName, contentHTMLOrAppMain) {
 
   // contentHTMLOrAppMain が関数なら main() を呼ぶ
   if (typeof contentHTMLOrAppMain === "function") {
-    // 一旦空のウィンドウ生成
-    win.innerHTML = `
-      <div class="titlebar">
-        ${appName}
-        <div class="window-btns">
-          <button class="window-btn min">ー</button>
-          <button class="window-btn max">□</button>
-          <button class="window-btn close">×</button>
-        </div>
+  // 一旦空のウィンドウ生成
+  win.innerHTML = `
+    <div class="titlebar">
+      ${appName}
+      <div class="window-btns">
+        <button class="window-btn min">ー</button>
+        <button class="window-btn max">□</button>
+        <button class="window-btn close">×</button>
       </div>
-      <div class="window-body"></div>
-    `;
-    document.getElementById('desktop').appendChild(win);
-    makeWindowDraggable(win);
-    makeWindowActive(win);
-    addTask(appName, win);
+    </div>
+    <div class="window-body"></div>
+  `;
+  document.getElementById('desktop').appendChild(win);
+  makeWindowDraggable(win);
+  makeWindowActive(win);
+  addTask(appName, win);
 
-    // アプリの main() を呼ぶ
-    contentHTMLOrAppMain(win.querySelector('.window-body'), win);
+  // アプリの main() を呼ぶ
+  contentHTMLOrAppMain(win.querySelector('.window-body'), win);
 
-  } else {
-    // 普通の HTML を表示する場合
-    win.innerHTML = `
-      <div class="titlebar">
-        ${appName}
-        <div class="window-btns">
-          <button class="window-btn min">ー</button>
-          <button class="window-btn max">□</button>
-          <button class="window-btn close">×</button>
-        </div>
+} else {
+  // 普通の HTML を表示する場合
+  win.innerHTML = `
+    <div class="titlebar">
+      ${appName}
+      <div class="window-btns">
+        <button class="window-btn min">ー</button>
+        <button class="window-btn max">□</button>
+        <button class="window-btn close">×</button>
       </div>
-      <div class="window-body">${contentHTMLOrAppMain}</div>
-    `;
-    document.getElementById('desktop').appendChild(win);
-    makeWindowDraggable(win);
-    makeWindowActive(win);
-    addTask(appName, win);
-  }
+    </div>
+    <div class="window-body"></div>
+  `;
+  document.getElementById('desktop').appendChild(win);
+  makeWindowDraggable(win);
+  makeWindowActive(win);
+  addTask(appName, win);
+
+  // ←ここを追加することで文字列HTMLも innerHTML に挿入される
+  win.querySelector('.window-body').innerHTML = contentHTMLOrAppMain;
+}
+
 
   // 最小化
   win.querySelector('.window-btn.min').onclick = () => win.style.display = "none";
