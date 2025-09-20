@@ -32,7 +32,7 @@ export function main() {
   makeWindowDraggable(win.querySelector('.titlebar'), win);
 
   // 閉じるボタン
-  win.querySelector('.window-btn.close').onclick = () => win.remove();
+  
 
   // iframeで開けるかチェック
   function tryLoad(url) {
