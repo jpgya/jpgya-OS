@@ -53,38 +53,41 @@ export function bootOS() {
   }
 
   function showDesktop() {
-    desktop.style.display = "";
-    taskbar.style.display = "";
+  desktop.style.display = "";
+  taskbar.style.display = "";
 
-    desktop.innerHTML = "";
-    Object.keys(apps).forEach(appName => {
-      const meta = apps[appName].meta;
-      const icon = document.createElement('div');
-      icon.className = "desktop-icon";
-      icon.innerHTML = `<div class="icon-emoji">${meta.icon}</div><div>${meta.name}</div>`;
-      icon.onclick = () => {
-    if (app.main) {
-      // main がある → 本物のアプリを開く
-      createAppWindow(meta.name, app.main);
-    } else {
-      // main が無い → 説明だけ出す
-      createAppWindow(meta.name, `<p>${meta.desc || ""}</p>`);
-    }
-  };
+  desktop.innerHTML = "";
+  Object.keys(apps).forEach(appName => {
+    const app = apps[appName];    // ←追加
+    const meta = app.meta;
 
+    const icon = document.createElement('div');
+    icon.className = "desktop-icon";
+    icon.innerHTML = `<div class="icon-emoji">${meta.icon}</div><div>${meta.name}</div>`;
 
-      desktop.appendChild(icon);
-    });
+    icon.onclick = () => {
+      if (typeof app.main === "function") {
+        // main がある → 本物のアプリを開く
+        createAppWindow(meta.name, app.main);
+      } else {
+        // main が無い → 説明だけ出す
+        createAppWindow(meta.name, `<p>${meta.desc || ""}</p>`);
+      }
+    };
 
-    startBtn.onclick = () => showStartMenu(apps);
+    desktop.appendChild(icon);
+  });
 
-    if (!window.clockInterval) {
-      window.clockInterval = setInterval(() => {
-        document.getElementById('clock').textContent =
-          new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      }, 1000);
-    }
+  startBtn.onclick = () => showStartMenu(apps);
+
+  if (!window.clockInterval) {
+    window.clockInterval = setInterval(() => {
+      document.getElementById('clock').textContent =
+        new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }, 1000);
   }
+}   
+
 }
 // os.js
 
