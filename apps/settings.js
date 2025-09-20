@@ -1,4 +1,4 @@
-import { makeWindowDraggable } from "../core/ui.js";
+import { createAppWindow, makeWindowDraggable } from "../core/ui.js";
 
 export const meta = {
   name: "設定",
@@ -6,11 +6,8 @@ export const meta = {
   desc: "OSの簡易設定"
 };
 
-export function main() {
-  const win = document.createElement('div');
-  win.className = "window";
-  win.innerHTML = `
-    
+export function main(container) {
+  const win = container || createAppWindow(meta.name, `
     <div class="window-body">
       <div>
         <label>テーマ色: </label>
@@ -20,13 +17,11 @@ export function main() {
         </select>
       </div>
       <button id="settings-apply">適用</button>
-      <div id="settings-msg"></div>
+      <div id="settings-msg" style="margin-top:8px;color:#0af;"></div>
     </div>
-    
-  `;
-  document.getElementById('desktop').appendChild(win);
-  win.querySelector('.window-close').onclick = () => win.remove();
+  `);
 
+  const msg = win.querySelector('#settings-msg');
   win.querySelector('#settings-apply').onclick = () => {
     const theme = win.querySelector('#settings-theme').value;
     if (theme === "light") {
@@ -36,8 +31,9 @@ export function main() {
       document.body.style.background = "#1e1e1e";
       document.body.style.color = "#eee";
     }
-    win.querySelector('#settings-msg').textContent = "テーマを変更しました";
+    msg.textContent = "テーマを変更しました";
   };
 
   makeWindowDraggable(win);
+  win.querySelector('.window-close').onclick = () => win.remove();
 }

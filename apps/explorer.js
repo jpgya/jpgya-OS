@@ -1,5 +1,5 @@
 import { listFiles, readFile, writeFile, deleteFile } from "../core/vfs.js";
-import { makeWindowDraggable } from "../core/ui.js";
+import { createAppWindow, makeWindowDraggable } from "../core/ui.js";
 
 export const meta = {
   name: "ファイル管理",
@@ -7,9 +7,9 @@ export const meta = {
   desc: "仮想ファイルシステムの閲覧・ダウンロード"
 };
 
-export function main() {
-  const win = document.createElement('div');
-  win.className = "window";
+export function main(container) {
+  const win = container || createAppWindow(meta.name, '');
+
   win.innerHTML = `
     <div class="window-body">
       <div style="display:flex;gap:24px;">
@@ -35,10 +35,8 @@ export function main() {
         <input id="explorer-upload" type="file" style="display:none;">
         <button id="explorer-upload-btn">アップロード</button>
       </div>
-    
+    </div>
   `;
-  document.getElementById('desktop').appendChild(win);
-  win.querySelector('.window-close').onclick = () => win.remove();
 
   const list = win.querySelector('#explorer-list');
   const content = win.querySelector('#explorer-content');
@@ -87,7 +85,7 @@ export function main() {
   };
 
   win.querySelector('#explorer-new').onclick = () => {
-    const fn = win.querySelector('#explorer-newname').value;
+    const fn = win.querySelector('#explorer-newname').value.trim();
     if (!fn) {
       msg.textContent = "ファイル名を入力してください";
       return;
@@ -97,7 +95,6 @@ export function main() {
     refreshList();
   };
 
-  // 外部ファイルのダウンロード
   win.querySelector('#explorer-download').onclick = () => {
     if (!currentFile) {
       msg.textContent = "ファイルを選択してください";
@@ -112,7 +109,6 @@ export function main() {
     msg.textContent = "ダウンロードしました";
   };
 
-  // 外部ファイルのアップロード
   win.querySelector('#explorer-upload-btn').onclick = () => {
     win.querySelector('#explorer-upload').click();
   };

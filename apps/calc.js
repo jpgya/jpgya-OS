@@ -2,27 +2,24 @@ import { makeWindowDraggable } from "../core/ui.js";
 
 export const meta = {
   name: "電卓",
-  icon: "🧮", // 画像URLから絵文字へ
+  icon: "🧮",
   desc: "シンプルな電卓アプリ"
 };
 
-export function main() {
-  const win = document.createElement('div');
-  win.className = "window";
-  win.innerHTML = `
+// container を受け取る形に変更
+export function main(container) {
+  container.innerHTML = `
     <input id="calc-input" type="text" style="width:90%">
     <button id="calc-eval">=</button>
     <div id="calc-result"></div>
   `;
-  document.getElementById('desktop').appendChild(win);
-  win.querySelector('.window-close').onclick = () => win.remove();
-  win.querySelector('#calc-eval').onclick = () => {
+
+  container.querySelector('#calc-eval').onclick = () => {
     try {
-      const val = eval(win.querySelector('#calc-input').value);
-      win.querySelector('#calc-result').textContent = val;
+      const val = eval(container.querySelector('#calc-input').value);
+      container.querySelector('#calc-result').textContent = val;
     } catch {
-      win.querySelector('#calc-result').textContent = "エラー";
+      container.querySelector('#calc-result').textContent = "エラー";
     }
   };
-  makeWindowDraggable(win);
 }
