@@ -62,13 +62,8 @@ export function bootOS() {
       const icon = document.createElement('div');
       icon.className = "desktop-icon";
       icon.innerHTML = `<div class="icon-emoji">${meta.icon}</div><div>${meta.name}</div>`;
-      icon.onclick = () => createAppWindow(meta.name, (body, win) => {
-       if (typeof meta.main === "function") {
-         meta.main(body, win);
-       } else {
-         body.innerHTML = `<p>${meta.desc || ""}</p>`;
-       }
-      });
+      icon.onclick = () => createAppWindow(meta.name, main);
+
 
       desktop.appendChild(icon);
     });
