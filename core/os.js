@@ -62,7 +62,15 @@ export function bootOS() {
       const icon = document.createElement('div');
       icon.className = "desktop-icon";
       icon.innerHTML = `<div class="icon-emoji">${meta.icon}</div><div>${meta.name}</div>`;
-      icon.onclick = () => createAppWindow(meta.name, main);
+      icon.onclick = () => {
+    if (app.main) {
+      // main がある → 本物のアプリを開く
+      createAppWindow(meta.name, app.main);
+    } else {
+      // main が無い → 説明だけ出す
+      createAppWindow(meta.name, `<p>${meta.desc || ""}</p>`);
+    }
+  };
 
 
       desktop.appendChild(icon);
